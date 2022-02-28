@@ -7,6 +7,7 @@ custom:
     httpPort: 4000
 
 plugins:
+  - serverless-plugin-typescript
   - serverless-offline
 
 provider:

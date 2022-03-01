@@ -5,7 +5,11 @@ import { ApiRequest } from "./ApiRequest";
 export class AddComponentRequest extends ApiRequest {
     public component: Component;
 
-    protected parse() {        
+    protected doParse() {        
         this.component = ComponentsApiTransformer.fromApi(this.req);
     }
+
+    protected doValidate() {
+        // TODO: validate        
+    }        
 }

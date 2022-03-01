@@ -1,3 +1,5 @@
+import { ApiError } from "../Errors/ApiError";
+
 export abstract class Controller {
     protected res;
 
@@ -11,6 +13,9 @@ export abstract class Controller {
         try {
             await this.doInvoke();
         } catch (error) {
+            if (error instanceof ApiError) {
+                this.res.status(error.httpStatus).json(error.toApiFormat());
+            }
             this.internalError(error);
         }
     }

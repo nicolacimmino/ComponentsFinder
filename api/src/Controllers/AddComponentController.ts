@@ -4,19 +4,17 @@ import { ComponentsApiTransformer } from "../Transformers/ComponentApiTransforme
 import { Controller } from "./Controller";
 
 export class AddComponentController extends Controller {
-    protected request: AddComponentRequest;
+  protected request: AddComponentRequest;
 
-    public constructor(request: AddComponentRequest, res) {
-      super(res);          
-      this.request = request;        
-    }
+  public constructor(request: AddComponentRequest, res) {
+    super(res);
+    this.request = request;
+  }
 
 
-    protected async doInvoke() {
-       this.request.parse();
-       
-        await ComponentsRepository.addComponent(this.request.component);
+  protected async doInvoke() {
+    await ComponentsRepository.addComponent(this.request.component);
 
-        this.success(ComponentsApiTransformer.toApi(this.request.component));
-    }
+    this.success(ComponentsApiTransformer.toApi(this.request.component));
+  }
 }

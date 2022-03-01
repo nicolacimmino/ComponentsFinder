@@ -1,7 +1,10 @@
 import { ApiError } from "../Errors/ApiError";
+import { ApiRequest } from "../Requests/ApiRequest";
 
 export abstract class Controller {
     protected res;
+
+    protected request: ApiRequest;
 
     protected abstract doInvoke();
 
@@ -11,6 +14,8 @@ export abstract class Controller {
 
     public async invoke() {
         try {
+            this.request.parse();
+
             await this.doInvoke();
         } catch (error) {
             if (error instanceof ApiError) {

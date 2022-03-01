@@ -10,16 +10,11 @@ const app = express();
 app.use(express.json());
 
 app.get("/components/:locator", async function (req, res) {
-
-  const controller = new GetComponentController(new GetComponentRequest(req), res);
-
-  controller.invoke();
+  (new GetComponentController(new GetComponentRequest(req), res)).invoke();  
 });
 
 app.post("/components", async function (req, res) {
-  const controller = new AddComponentController(new AddComponentRequest(req), res);
-
-  controller.invoke();
+  (new AddComponentController(new AddComponentRequest(req), res)).invoke();
 });
 
 app.use((req, res, next) => {

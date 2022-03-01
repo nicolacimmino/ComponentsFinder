@@ -1,13 +1,20 @@
 import { ComponentsRepository } from "../Repositories/ComponentsRepository";
+import { AddComponentRequest } from "../Requests/AddComponentRequest";
 import { ComponentsApiTransformer } from "../Transformers/ComponentApiTransformer";
 import { Controller } from "./Controller";
 
 export class AddComponentController extends Controller {
-    public async invoke() {
-        const component = ComponentsApiTransformer.fromApi(this.req);
+    protected request: AddComponentRequest;
 
-        await ComponentsRepository.addComponent(component);
+    public constructor(request: AddComponentRequest, res) {
+      super(res);          
+      this.request = request;        
+    }
 
-        this.success(ComponentsApiTransformer.toApi(component));
+
+    protected async doInvoke() {
+        await ComponentsRepository.addComponent(this.request.component);
+
+        this.success(ComponentsApiTransformer.toApi(this.request.component));
     }
 }

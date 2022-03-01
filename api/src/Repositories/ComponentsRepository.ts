@@ -1,3 +1,5 @@
+import { Component } from "../Models/Component";
+
 const AWS = require("aws-sdk");
 
 const COMPONENTS_TABLE = process.env.COMPONENTS_TABLE;
@@ -16,7 +18,7 @@ export class ComponentsRepository {
         return Item;
     }
 
-    public static async addComponent(component) {
+    public static async addComponent(component: Component) {
         const { Item } = await dynamoDbClient.put({
             TableName: COMPONENTS_TABLE,
             Item: {

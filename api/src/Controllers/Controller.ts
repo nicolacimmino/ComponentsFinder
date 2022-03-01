@@ -1,21 +1,29 @@
-export class Controller {
-    protected req;
+export abstract class Controller {
     protected res;
 
-    public constructor(req, res) {
-        this.req = req;
+    protected abstract doInvoke();
+
+    public constructor(res) {
         this.res = res;
     }
 
-    public success(data:any) {
+    public async invoke() {
+        try {
+            await this.doInvoke();
+        } catch (error) {
+            this.internalError(error);
+        }
+    }
+
+    public success(data: any) {
         this.res.json(data);
     }
-        
+
     public notFound() {
         this.res.status(404).json({ error: 'NOT_FOUND' });
     }
 
-    public internalError(error:Error) {
+    public internalError(error: Error) {
         console.log(error);
         this.res.status(500).json({ error: 'INTERNAL' });
     }

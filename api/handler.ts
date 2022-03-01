@@ -4,18 +4,31 @@ import { GetComponentController } from "./src/Controllers/GetComponentController
 import { AddComponentController } from "./src/Controllers/AddComponentController";
 import { GetComponentRequest } from "./src/Requests/GetComponentRequest";
 import { AddComponentRequest } from "./src/Requests/AddComponentRequest";
+import { ValidationErrorMiddleware } from "./src/Middleware/ValidationErrorMiddleware";
+import { ValidationError } from "express-json-validator-middleware";
+const { Validator } = require("express-json-validator-middleware");
+
+const { validate } = new Validator();
 
 const app = express();
 
 app.use(express.json());
 
-app.get("/components/:locator", async function (req, res) {
-  (new GetComponentController(new GetComponentRequest(req), res)).invoke();  
-});
+app.get(
+  "/components/:locator",
+  validate({ params: GetComponentRequest.schema }),
+  async function (req, res) {
+    (new GetComponentController(new GetComponentRequest(req), res)).invoke();
+  });
 
-app.post("/components", async function (req, res) {
-  (new AddComponentController(new AddComponentRequest(req), res)).invoke();
-});
+app.post(
+  "/components",
+  validate({ body: AddComponentRequest.schema }),
+  async function (req, res) {
+    (new AddComponentController(new AddComponentRequest(req), res)).invoke();
+  });
+
+app.use(ValidationErrorMiddleware.handle);
 
 app.use((req, res, next) => {
   return res.status(404).json({

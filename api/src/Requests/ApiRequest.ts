@@ -6,13 +6,7 @@ export abstract class ApiRequest {
 
     protected abstract doParse();
 
-    protected abstract doValidate();
-
     public parse() {
-        this.doValidate();
-
-        // TODO: raise validation errors as InputInvalid
-        
         this.doParse();
     }
 

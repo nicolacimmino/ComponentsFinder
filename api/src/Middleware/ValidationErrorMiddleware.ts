@@ -13,8 +13,6 @@ export class ValidationErrorMiddleware {
 
         response.status(400).json({
             errors: error.validationErrors,
-        });
-
-        next();
+        });        
     }
 }

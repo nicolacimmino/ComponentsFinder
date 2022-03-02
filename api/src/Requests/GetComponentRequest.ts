@@ -19,8 +19,4 @@ export class GetComponentRequest extends ApiRequest {
 
         this.locator = locator;
     }
-
-    protected doValidate() {
-        // TODO: validate
-    }
 }

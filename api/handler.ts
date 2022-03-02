@@ -5,7 +5,6 @@ import { AddComponentController } from "./src/Controllers/AddComponentController
 import { GetComponentRequest } from "./src/Requests/GetComponentRequest";
 import { AddComponentRequest } from "./src/Requests/AddComponentRequest";
 import { ValidationErrorMiddleware } from "./src/Middleware/ValidationErrorMiddleware";
-import { ValidationError } from "express-json-validator-middleware";
 const { Validator } = require("express-json-validator-middleware");
 
 const { validate } = new Validator();

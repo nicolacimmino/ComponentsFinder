@@ -15,6 +15,6 @@ export class AddComponentController extends Controller {
   protected async doInvoke() {
     await ComponentsRepository.addComponent(this.request.component);
 
-    this.success(ComponentsApiTransformer.toApi(this.request.component));
+    this.created(ComponentsApiTransformer.toApi(this.request.component));
   }
 }

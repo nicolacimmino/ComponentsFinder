@@ -26,15 +26,19 @@ export abstract class Controller {
     }
 
     public success(data: any) {
-        this.res.json(data);
+        this.res.status(200).json(data);
+    }
+
+    public created(data: any) {
+        this.res.status(201).json(data);
     }
 
     public notFound() {
-        this.res.status(404).json({ error: 'NOT_FOUND' });
+        this.res.status(404).json({ error: "NOT_FOUND" });
     }
 
     public internalError(error: Error) {
         console.log(error);
-        this.res.status(500).json({ error: 'INTERNAL' });
+        this.res.status(500).json({ error: "INTERNAL" });
     }
 }

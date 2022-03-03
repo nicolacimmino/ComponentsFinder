@@ -12,6 +12,7 @@ plugins:
 
 provider:
   name: aws
+  region: eu-central-1
   runtime: nodejs12.x
   lambdaHashingVersion: '20201221'
   iam:

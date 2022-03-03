@@ -7,6 +7,23 @@ const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
 
 export class ComponentsRepository {
 
+    public static async getAll(start: string) {
+        let params: any = {
+            TableName: COMPONENTS_TABLE,
+            Limit: 2,
+        };
+
+        if (start) {
+            params.ExclusiveStartKey = {
+                locator: start
+            };
+        }
+
+        const { Items, LastEvaluatedKey } = await dynamoDbClient.scan(params).promise();
+
+        return { Items, LastEvaluatedKey };
+    }
+
     public static async getByLocator(locator: string) {
         const { Item } = await dynamoDbClient.get({
             TableName: COMPONENTS_TABLE,

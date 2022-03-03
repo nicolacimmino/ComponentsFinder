@@ -5,6 +5,8 @@ import { AddComponentController } from "./src/Controllers/AddComponentController
 import { GetComponentRequest } from "./src/Requests/GetComponentRequest";
 import { AddComponentRequest } from "./src/Requests/AddComponentRequest";
 import { ValidationErrorMiddleware } from "./src/Middleware/ValidationErrorMiddleware";
+import { GetComponentsRequest } from "./src/Requests/GetComponentsRequest";
+import { GetComponentsController } from "./src/Controllers/GetComponentsController";
 const { Validator } = require("express-json-validator-middleware");
 
 const { validate } = new Validator();
@@ -18,6 +20,13 @@ app.get(
   validate({ params: GetComponentRequest.schema }),
   async function (req, res) {
     (new GetComponentController(new GetComponentRequest(req), res)).invoke();
+  });
+
+app.get(
+  "/components/",
+  validate({ params: GetComponentsRequest.schema }),
+  async function (req, res) {
+    (new GetComponentsController(new GetComponentsRequest(req), res)).invoke();
   });
 
 app.post(

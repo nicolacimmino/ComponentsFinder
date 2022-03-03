@@ -26,11 +26,24 @@ export abstract class Controller {
     }
 
     public success(data: any) {
-        this.res.status(200).json(data);
+        this.res.status(200).json({
+            result: data,            
+        });
+    }
+
+    public successPaginated(data: any, nextPageLink: string) {
+        this.res.status(200).json({
+            result: data,
+            links: {
+                next: nextPageLink
+            }
+        });
     }
 
     public created(data: any) {
-        this.res.status(201).json(data);
+        this.res.status(201).json({
+            result: data,            
+        });
     }
 
     public notFound() {

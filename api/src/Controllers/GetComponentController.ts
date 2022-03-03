@@ -22,6 +22,6 @@ export class GetComponentController extends Controller {
       return;
     }
 
-    this.created(ComponentsApiTransformer.toApi(component));
+    this.success(ComponentsApiTransformer.toApi(component));
   }
 }

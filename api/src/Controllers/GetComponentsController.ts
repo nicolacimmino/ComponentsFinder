@@ -15,7 +15,7 @@ export class GetComponentsController extends Controller {
 
   protected async doInvoke() {
 
-    const queryResult = await ComponentsRepository.getAll(this.request.start);
+    const queryResult = await ComponentsRepository.getAll(this.request.start, this.request.filter);
 
     let result: Component[] = [];
 
@@ -25,6 +25,6 @@ export class GetComponentsController extends Controller {
 
     let { locator } = queryResult.LastEvaluatedKey || {};
 
-    this.successPaginated(result, "/components?start=" + (locator || ""));
+    this.successPaginated(result, "/components?start=" + (locator || "") + "&filter=" + (this.request.filter || ""));
   }
 }

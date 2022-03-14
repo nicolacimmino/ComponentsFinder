@@ -7,7 +7,7 @@ const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
 
 export class ComponentsRepository {
 
-    public static async getAll(start: string) {
+    public static async getAll(start: string, filter: string) {
         let params: any = {
             TableName: COMPONENTS_TABLE,
             Limit: 2,
@@ -17,6 +17,16 @@ export class ComponentsRepository {
             params.ExclusiveStartKey = {
                 locator: start
             };
+        }
+
+        if (filter) {
+            params.FilterExpression = "contains(#description, :filter)";
+            params.ExpressionAttributeNames = {
+                "#description": "description"
+            };
+            params.ExpressionAttributeValues = {
+                ":filter": filter
+            }
         }
 
         const { Items, LastEvaluatedKey } = await dynamoDbClient.scan(params).promise();

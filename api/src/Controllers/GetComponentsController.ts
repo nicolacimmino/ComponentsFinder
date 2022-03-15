@@ -23,8 +23,12 @@ export class GetComponentsController extends Controller {
       result.push(ComponentsApiTransformer.toApi(component));
     };
 
-    let { locator } = queryResult.LastEvaluatedKey || {};
+    var nextLink = "";
+    if (queryResult.lastScanLocator) {
+      nextLink = "/components/?start=" + queryResult.lastScanLocator +
+        "&filter=" + (this.request.filter || "")
+    }
 
-    this.successPaginated(result, "/components?start=" + (locator || "") + "&filter=" + (this.request.filter || ""));
+    this.successPaginated(result, nextLink);
   }
 }

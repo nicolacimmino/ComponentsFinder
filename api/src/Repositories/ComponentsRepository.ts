@@ -1,16 +1,15 @@
-import { InternalApiError } from "../Errors/InternalApiError";
 import { Component } from "../Models/Component";
-
-const AWS = require("aws-sdk");
+import { DynamoDbClientWrapper } from "../Aws/DynamoDBClientWrapper";
 
 const COMPONENTS_TABLE = process.env.COMPONENTS_TABLE;
-const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
+
+const dynamoDbClientWrapper = new DynamoDbClientWrapper();
 
 export class ComponentsRepository {
     public static async getAll(start: string, filter: string) {
         var itemsToReturn = new Array();
         var lastScanLocator = start;
-        var dynamoCount = 0;
+        
 
         do {
             let params: any = {
@@ -34,13 +33,7 @@ export class ComponentsRepository {
                 }
             }
 
-            dynamoCount++;
-
-            if (dynamoCount > 50) {
-                throw new InternalApiError("dynamo runaway");
-            }
-
-            const { Items, LastEvaluatedKey } = await dynamoDbClient.scan(params).promise();
+            const { Items, LastEvaluatedKey } = await dynamoDbClientWrapper.scan(params).promise();
 
             lastScanLocator = LastEvaluatedKey ? LastEvaluatedKey.locator : null;
 
@@ -51,7 +44,7 @@ export class ComponentsRepository {
     }
 
     public static async getByLocator(locator: string) {
-        const { Item } = await dynamoDbClient.get({
+        const { Item } = await dynamoDbClientWrapper.get({
             TableName: COMPONENTS_TABLE,
             Key: {
                 locator: locator,
@@ -62,7 +55,7 @@ export class ComponentsRepository {
     }
 
     public static async addComponent(component: Component) {
-        const { Item } = await dynamoDbClient.put({
+        const { Item } = await dynamoDbClientWrapper.put({
             TableName: COMPONENTS_TABLE,
             Item: {
                 locator: component.locator,
